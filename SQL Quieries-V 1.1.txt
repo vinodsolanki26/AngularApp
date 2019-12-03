@@ -1,0 +1,315 @@
+## Reset identity
+
+	DBCC CHECKIDENT ('[TestTable]', RESEED, 0);
+	GO
+
+
+## Write a SQL query to fetch duplicate records from a table.
+
+	SELECT EmpId, Project, Salary, COUNT(*)
+	FROM EmployeeSalary
+	GROUP BY EmpId, Project, Salary
+	HAVING COUNT(*) > 1;
+
+	
+## Write a SQL query to remove duplicates from a table without using temporary table.	
+
+	rowid		Value
+		1		AA
+		2		BB	
+		3		AA
+		4		CC
+
+		
+	DELETE TableB
+	WHERE  rowid not in (
+                      SELECT MAX(rowid)
+                      FROM  TableB
+                      GROUP  BY Value
+                    );
+
+
+
+					
+	WITH employeeCTE as
+	(
+		SELECT *, ROW_NUMBWR() over (PARTITION BY id  ORDER BY id) as ROWNUMBER
+		FROM Employee
+	)
+	
+	DELETE FROM employeeCTE WHERE ROWNUMBER > 1
+
+
+## Write a SQL query to create a new table with data and structure copied from another table.
+
+With Data :::
+SELECT * INTO newTable FROM EmployeeDetails; 
+
+Without Data :::
+SELECT * INTO newTable FROM EmployeeDetails WHERE 1 = 0;
+
+
+## Write a SQL query to fetch common records between two tables.
+Ans. Using INTERSECT-
+
+SELECT * FROM EmployeeSalary
+INTERSECT
+SELECT * FROM ManagerSalary
+
+
+## Write SQL query to find the nth highest salary from table.
+
+SELECT Salary FROM Employee 
+ORDER BY Salary DESC 
+LIMIT N-1,1;
+
+## Write an SQL query to print the first three characters of  FIRST_NAME from Worker table.
+
+Select substring(FIRST_NAME,1,3) from Worker;
+
+## Write an SQL query to find the position of the alphabet (‘t’) in the first name column ‘Amitabh’ from Worker table.
+
+ SELECT CHARINDEX('t', 'Customer') AS MatchPosition;
+
+## Write an SQL query to print the FIRST_NAME from Worker table after removing white spaces from the right side.
+
+Select RTRIM(FIRST_NAME) from Worker;
+
+## Write an SQL query to print the DEPARTMENT from Worker table after removing white spaces from the left side.
+
+Select LTRIM(DEPARTMENT) from Worker;
+
+## Write an SQL query to show only odd rows from a table.
+
+SELECT * FROM Worker WHERE MOD (WORKER_ID, 2) <> 0;
+
+## Write an SQL query to show only even rows from a table.
+
+SELECT * FROM Worker WHERE MOD (WORKER_ID, 2) = 0;
+
+## How to select random rows from a table? 
+
+	SELECT TOP 10 *
+	FROM [Product]
+	ORDER BY NEWID()
+	GO
+ 
+
+## There are 5 major constraints are used in SQL, such as
+
+    NOT NULL: That indicates that the column must have some value and cannot be left null
+    UNIQUE: This constraint is used to ensure that each row and column has unique value and no value is being repeated in any other row or column
+    PRIMARY KEY: This constraint is used in association with NOT NULL and UNIQUE constraints such as on one or the combination of more than one columns to identify the particular record with a unique identity.
+    FOREIGN KEY: It is used to ensure the referential integrity of data in the table and also matches the value in one table with another using Primary Key
+    CHECK: It is used to ensure whether the value in columns fulfills the specified condition
+	
+	
+## What is CTE?
+
+A CTE or common table expression is an expression which contains temporary result set which is defined in a SQL statement.
+
+		WITH Employee_CTE (EmployeeNumber, Title)
+		AS
+		(
+			SELECT NationalIDNumber, JobTitle
+			FROM   Employee
+		)
+		SELECT EmployeeNumber,Title
+		FROM   Employee_CTE
+
+## What are the properties of a transaction?
+
+Generally, these properties are referred to as ACID properties. They are:
+
+    Atomicity
+    Consistency
+    Isolation
+    Durability.	
+
+	
+## What is a Cursor?
+
+A cursor is a database object which is used to manipulate data in a row-to-row manner.
+
+Cursor follows steps as given below
+
+    Declare Cursor
+    Open Cursor
+    Retrieve row from the Cursor
+    Process the row
+    Close Cursor
+    Deallocate Cursor
+
+	
+## What is Normalization? How many Normalization forms are there?
+
+Normalization is used to organize the data in such manner that data redundancy will never occur in the database and avoid insert, update and delete anomalies.
+
+There are 5 forms of Normalization
+
+    First Normal Form (1NF): It removes all duplicate columns from the table. Creates a table for related data and identifies unique column values
+    First Normal Form (2NF): Follows 1NF and creates and places data subsets in an individual table and defines the relationship between tables using the primary key
+    Third Normal Form (3NF): Follows 2NF and removes those columns which are not related through primary key
+    Fourth Normal Form (4NF): Follows 3NF and do not define multi-valued dependencies. 4NF also known as BCNF
+	
+	
+## What is the Cartesian product of table?
+
+The output of Cross Join is called as a Cartesian product.
+ It returns rows combining each row from the first table with each row of the second table. 
+ 
+For Example, if we join two tables having 15 and 20 columns the Cartesian product of two tables will be 15×20=300 Rows.
+
+
+##What is Self-Join?
+
+Self-join is set to be query used to compare to itself. 
+
+
+## What are transaction and its controls?
+
+In simple word, we can say that a transaction means a group of SQL queries executed on database records.
+
+There are 4 transaction controls such as
+
+    COMMIT: It is used to save all changes made through the transaction
+    ROLLBACK: It is used to roll back the transaction such as all changes made by the transaction are reverted back and database remains as before
+    SET TRANSACTION: Set the name of transaction
+    SAVEPOINT: It is used to set the point from where the transaction is to be rolled back
+	
+	
+##What is a View?
+
+A view is a virtual table which consists of a subset of data contained in a table. 
+Views are not virtually present, and it takes less space to store. View can have data of one or more tables combined, 
+and it is depending on the relationship. 
+
+
+##What is subquery?
+
+A subquery is a query within another query. The outer query is called as main query,
+and inner query is called subquery. SubQuery is always executed first, and the result of subquery is passed on to the main query. 
+
+##What is the difference between DELETE and TRUNCATE commands?
+
++----------------------------------------+----------------------------------------------+
+|                Truncate                |                    Delete                    |
++----------------------------------------+----------------------------------------------+
+| We can't Rollback after performing     | We can Rollback after delete.                |
+| Truncate.                              |                                              |
+|                                        |                                              |
+| Example:                               | Example:                                     |
+| BEGIN TRAN                             | BEGIN TRAN                                   |
+| TRUNCATE TABLE tranTest                | DELETE FROM tranTest                         |
+| SELECT * FROM tranTest                 | SELECT * FROM tranTest                       |
+| ROLLBACK                               | ROLLBACK                                     |
+| SELECT * FROM tranTest                 | SELECT * FROM tranTest                       |
++----------------------------------------+----------------------------------------------+
+| Truncate reset identity of table.      | Delete does not reset identity of table.     |
++----------------------------------------+----------------------------------------------+
+| It locks the entire table.             | It locks the table row.                      |
++----------------------------------------+----------------------------------------------+
+| Its DDL(Data Definition Language)      | Its DML(Data Manipulation Language)          |
+| command.                               | command.                                     |
++----------------------------------------+----------------------------------------------+
+| We can't use WHERE clause with it.     | We can use WHERE to filter data to delete.   |
++----------------------------------------+----------------------------------------------+
+| Trigger is not fired while truncate.   | Trigger is fired.                            |
++----------------------------------------+----------------------------------------------+
+| Syntax :                               | Syntax :                                     |
+| 1) TRUNCATE TABLE table_name           | 1) DELETE FROM table_name                    |
+|                                        | 2) DELETE FROM table_name WHERE              |
+|                                        |    example_column_id IN (1,2,3)              |
++----------------------------------------+----------------------------------------------+
+
+## What is data Integrity?
+
+Data Integrity defines the accuracy and consistency of data stored in a database. 
+
+
+## What is collation?
+
+Collation is defined as set of rules that determine how character data can be sorted and compared. 
+
+This can be used to compare A and, other language characters and also depends on the width of the characters.
+
+ASCII value can be used to compare these character data. 
+
+
+##What is recursive stored procedure?
+
+A stored procedure which calls by itself until it reaches some boundary condition. 
+This recursive function or procedure helps programmers to use the same set of code any number of times. 
+
+
+##What is Union, minus and Interact commands?
+
+UNION operator is used to combine the results of two tables, and it eliminates duplicate rows from the tables.
+
+MINUS operator is used to return rows from the first query but not from the second query. Matching records of first 
+and second query and other rows from the first query will be displayed as a result set.
+
+INTERSECT operator is used to return rows returned by both the queries. 
+
+
+## What are aggregate and scalar functions?
+
+Aggregate functions are used to evaluate mathematical calculation and return single values. 
+This can be calculated from the columns in a table. 
+Scalar functions return a single value based on the input value.
+
+Example -.
+
+Aggregate – max(), count - Calculated with respect to numeric.
+
+Scalar – UCASE(), NOW() – Calculated with respect to strings. 
+
+
+## User-defined Functions?
+
+- User-defined functions cannot be used to perform actions that modify the database state.
+
+- User-defined functions cannot contain an OUTPUT INTO clause that has a table as its target.
+
+- User-defined functions can not return multiple result sets. Use a stored procedure if you need to return multiple result sets.
+
+- Error handling is restricted in a user-defined function. A UDF does not support TRY...CATCH, @ERROR or RAISERROR.
+
+
+##  Local Variable:
+
+The scope or lifetime of the local variable is within a block or procedure..
+
+E.g.: DECLARE @Variable1
+
+## Global Variable:
+
+The scope or lifetime of the global Variable throughout the execution of the program.
+
+E.g.: DECLARE @@Variable1
+ 
+ 
+
+## Table variables (DECLARE @t TABLE) are visible only to the connection that creates it, and are deleted when the batch or stored procedure ends.
+
+## Local temporary tables (CREATE TABLE #t) are visible only to the connection that creates it, and are deleted when the connection is closed.
+
+## Global temporary tables (CREATE TABLE ##t) are visible to everyone, and are deleted when all connections that have referenced them have closed.
+
+## Tempdb permanent tables (USE tempdb CREATE TABLE t) are visible to everyone, and are deleted when the server is restarted.
+
+
+
+##What is COALESCE in SQL Server?
+
+COALESCE is used to return first non-null expression within the arguments. This function is used to return a non-null from more than one column in the arguments.
+
+Example – Select COALESCE(empno, empname, salary) from employee;
+
+
+##What are Magic Tables in SQL Server?
+
+Insert and Delete tables are created when the trigger is fired for any DML command. Those tables are called Magic Tables in SQL Server. 
+These magic tables are used inside the triggers for data transaction.
+
+

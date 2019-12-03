@@ -1,0 +1,386 @@
+
+--------------------------------
+SOLID Principle
+--------------------------------
+
+
+    S - single responsibility principle (SRP)
+    O - open closed principle (OCP)
+    L - Liskov substitution principle (LSP)
+    I - Interface segregation principle (ISP)
+    D - Dependency Inversion principle (DIP)
+
+	
+1. ::: Single responsibility principle (SRP) :::
+
+A class should have only single responsibility. A single reason to change.
+
+This doesn’t mean it should only have one method, but instead all the methods should relate to a single purpose 
+
+Bad Way ::-
+
+This Add method does too much, it shouldn’t know how to write to the log and how to add a customer.
+
+class Customer
+{
+    void Add(Database db)
+    {
+        try
+        {
+            db.Add();
+        }
+        catch (Exception ex)
+        {
+            File.WriteAllText(@"C:\Error.txt", ex.ToString());
+        }
+    }
+}
+
+
+Good Way ::-
+
+This doesn’t violate the single responsibility principle by abstracting the logger for the actual writing.
+
+class Customer
+{
+    private FileLogger logger = new FileLogger();
+    void Add(Database db)
+    {
+        try {
+            db.Add();
+        }
+        catch (Exception ex)
+        {
+            logger.Handle(ex.ToString());
+        }
+    }
+}
+class FileLogger
+{
+    void Handle(string error)
+    {
+        File.WriteAllText(@"C:\Error.txt", error);
+    }
+}
+
+
+2. ::: open closed principle :::
+
+Open for Extension Closed for Modification.
+
+Bad Way ::-
+
+This violates the Open Closed Principle, because at the moment there are 2 types of customer, 
+if we want to add another customer type we have to add an if else statement below and will modify the existing code.
+
+class Customer
+{
+    int Type;
+
+    void Add(Database db)
+    {
+        if (Type == 0)
+        {
+            db.Add();
+        }
+        else
+        {
+            db.AddExistingCustomer();
+        }
+    }
+}
+
+Good Way ::-
+
+This is better, because we structure the code so it’s easier to extend and harder to modify.
+
+class ICustomerBetter
+{
+    void Add(Database db)
+    {
+        db.Add();
+    }
+}
+
+class ExistingCustomer : ICustomerBetter
+{
+    override void Add(Database db)
+    {
+         
+    }
+}
+
+class AnotherCustomer : ICustomerBetter
+{
+    override void Add(Database db)
+    {
+         
+    }
+}
+
+
+3. ::: Liskov Substitution Principle :::
+
+- It talks about polymorphism. 
+- It ensures that a derived class does not affect the behavior of the parent class, in other words that a derived class must be substitutable for its base class.
+
+The Liskov Substitution Principle (LSP) states that child class objects should be able to replace parent class objects without without modifying its behavior.
+
+4. ::: Interface segregation principle (ISP) :::
+
+This principle states that any client should not be forced to use an interface which they don't use. . 
+
+When all the tasks are done by a single class or in other words, one class is used in almost all the application classes then 
+it has become a fat class with overburden. Inheriting such class will results in having sharing methods which are not relevant 
+to derived classes but its there in the base class so that will inherit in the derived class.
+
+Using ISP, we can create separate interfaces for each operation or requirement rather than having a single class to do the same work. 
+
+
+5. ::: Dependency Inversion Principle (DIP)  :::
+
+    - High-level modules should not depend on low-level modules. Both should depend on abstractions.
+
+    - Abstractions should not depend on details. Details should depend on abstractions.
+
+	
+In simple words, the principle says that there should not be a tight coupling among components of software and to avoid that, 
+the components should depend on abstraction.	
+
+Inversion of Control (IoC) is a technique to implement the Dependency Inversion Principle in C#. Inversion of control can be 
+implemented using either an abstract class or interface.
+
+
+
+--------------------------------
+Extension Method In C#
+--------------------------------
+
+It also shown by VS intellisense. When we press the dot (.) after a type instance, then it comes in VS intellisense.
+
+Extension methods are a new feature in C# 3.0. An extension method enables us to add methods to existing types without 
+creating a new derived type, recompiling, or modify the original types. 
+
+We can say that it extends the functionality of an existing type in .NET.
+
+
+
+--------------------------------
+Anonymous Types in C#
+--------------------------------
+
+1. Anonymous type can be defined using the new keyword and object initializer syntax.
+2. The implicitly typed variable- var, is used to hold an anonymous type.
+3. Anonymous type is a reference type and all the properties are read-only. 
+4. Anonymous cannot implement interface. 
+
+Example
+
+var anonymousData = new
+                    {
+                        ForeName = "Jignesh",
+                        SurName = "Trivedi"
+                    };
+
+
+
+
+--------------------------------
+Encapsulation and abstraction
+--------------------------------
+
+		Abstraction																		Encapsulation
+
+1. Abstraction is outer layout in terms of design.							1. Encapsulation is inner layout in terms of implementation.
+For Example: - Outer Look of a iPhone, like it has a display screen.		   For Example: - Inner Implementation detail of a iPhone, how DisplayScreen 
+																								are connect with each other using circuits
+
+2. Abstraction is a process to abstract or hide the functionality 			2. Encapsulation means to encapsulate or put everything into one thing and provide others to use it. 
+and provide users or other programmers to use it only. 
+Like for the method Console.WriteLine(), no one knows what actually 
+is happening behind the function calling. We are just using it by 
+calling and passing the arguments. This is the thing called Abstraction.
+
+ 
+3. You can use abstraction using Interface and Abstract Class. 				3. You can implement encapsulation using Access Modifiers (Public, Protected & Private.) 
+
+
+------------------------------------------------------------------------------------------------
+Access Modifiers Types
+------------------------------------------------------------------------------------------------
+
+1. public : Access is not restricted.
+
+2. Private Access Modifier : private access modifier are accessible only inside a class or a structure. 
+
+3. protected :	Access is limited to within the class definition and any class that inherits from the class
+
+4. Internal Access Modifier : The internal keyword specifies that the object is accessible only inside its own assembly but not in other assemblies:
+
+--------------------------------
+improve your LINQ query performance
+--------------------------------
+
+1. Avoid to put all the DB Objects into One Single Entity Model
+
+2. Disable change tracking for entity if not needed
+Whenever you retrieve the data only for reading purpose, not for modification then there is no need of object tracking. 
+
+3. Avoid fetching all the fields if not required
+
+4. Use Compiled Query wherever needed
+
+5. Retrieve only required number of records
+
+6. Avoid using Contains
+
+
+-----------------------------------------
+What exactly are unmanaged resources?
+-----------------------------------------
+
+
+Managed resources basically means "managed memory" that is managed by the garbage collector. 
+When you no longer have any references to a managed object (which uses managed memory), the garbage collector will (eventually) release that memory for you.
+
+Unmanaged resources are then everything that the garbage collector does not know about. For example:
+
+    Open files
+    Open network connections
+    Unmanaged memory
+
+	
+-----------------------------------------
+Inheritance from multiple interfaces with the same method name
+-----------------------------------------
+
+
+	interface A
+	{
+		void Hello();
+	}
+	interface B
+	{
+		void Hello();
+	}
+
+	
+	class Test : A, B
+	{
+		void A.Hello()
+		{
+			Console.WriteLine("Hello to all-A");
+		}
+
+		void B.Hello()
+		{
+			Console.WriteLine("Hello to all-B");
+		}
+	}
+
+	public class interfacetest
+	{
+		public static void Main()
+		{
+			A Obj1 = new Test();
+
+			Obj1.Hello();
+
+			B Obj2 = new Test();
+
+			Obj2.Hello();
+		}
+	}
+
+
+------------------------------------------------------------------------------------------------------------------------------
+ What is Delegates?
+------------------------------------------------------------------------------------------------------------------------------
+
+- It is a function pointer.
+- It is type safe.
+- Delegates are mainly used for the event handling and the callback methods.
+- Delegates allow methods to be passed as parameters.
+
+In simple words, we can say that the delegates in C# are the Type-Safe Function Pointer. It means they hold the reference 
+of a method and then calls that method for execution.
+
+
+
+What are the types of delegates?
+
+   1. Single cast delegate
+   2. Multicast delegate
+   
+   
+   
+   
+using System;
+namespace Delegates
+{
+
+    public delegate int MyDelegate(int x, int y);
+
+    class Program
+    {
+
+      static int Sum(int x, int y)
+      {
+		return x + y;
+      }
+
+        static void Main()
+        {
+
+            MyDelegate d = new MyDelegate(Sum);           
+
+            int result = d.Invoke(12, 15);
+
+            Console.WriteLine(result);
+
+            Console.ReadLine();
+
+        }
+    }
+} 
+
+
+Multicast delegates in action
+
+The following code listing illustrates a multicast delegate. Note the usage of the delegate instance - we have used the += operator to 
+assign the delegate to multiple methods that have identical signature.
+
+
+using System;
+namespace Delegates
+{
+    public delegate void MyDelegate();
+
+    class Program
+    {
+        public static void Method1()
+        {
+            Console.WriteLine("Inside Method1...");
+        }
+
+        public static void Method2()
+        {
+            Console.WriteLine("Inside Method2...");
+        }
+
+        static void Main()
+        {
+
+            MyDelegate d = null;
+
+            d += Method1;
+
+            d += Method2;
+
+            d.Invoke();
+
+            Console.ReadLine();
+        }
+    }
+}
+

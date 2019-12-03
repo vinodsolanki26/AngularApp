@@ -1,0 +1,440 @@
+
+------------------------------------------------------------------------------------------------------------------------------
+1. What are Cookies?
+------------------------------------------------------------------------------------------------------------------------------
+
+A cookie is a piece of data that is saved in the client web browser.
+The cookie is saved either in the memory of the web browser OR as a text file in the file system of the client.
+
+How Does Cookies Mechanism Work?
+---------------------------------------
+The mechanism of cookies is simple. When a client request a web page from a server the first request isn't containing 
+a cookie. The server identify that the client has no cookie and generate one. Then the server sends the cookie to
+the client and from now on the client will send the cookie in every request and the server will send the cookie in 
+every response.
+
+Cookies Limitations
+---------------------------------------
+
+    Most browsers support cookies of up to 4096 bytes. This limitation makes the cookies a way to store only small amount of data.
+    Browsers have a limit on the amount of cookies a web site can save in the client. Most browsers allow only 20 cookies per site. 
+
+How To Use Cookies?
+---------------------------------------
+To create a cookie you need to use the "Response.Cookies" property. To read a cookie value from the client use 
+the "Request.Cookies" property. The following example
+
+if (Request.Cookies["cookie"] != null)
+{
+   // get the cookie
+   HttpCookie cookie = Request.Cookies["cookie"]; 
+
+   // get the cookie value
+   string value = Server.HtmlEncode(cookie.Value);
+} 
+
+// write the cookie to the response
+Response.Cookies["cookie"].Value = "value";
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+2. How to turn off cookies for a page?
+------------------------------------------------------------------------------------------------------------------------------
+
+Cookie.Discard Property when true, instructs the client application not to save the Cookie on the user's hard disk when a session ends.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+3. Can “this” be used within a static method?  
+------------------------------------------------------------------------------------------------------------------------------
+
+We can’t use ‘This’ in a static method because we can only use static variables/methods in a static method.
+
+------------------------------------------------------------------------------------------------------------------------------
+4. What are value types and reference types?
+------------------------------------------------------------------------------------------------------------------------------
+
+Variables that store data are called value types. Value types are stored on stack.
+They contain the actual values. 
+
+Value types:
+int, enum , byte, decimal, double, float, long
+
+---------------------------------------
+
+Variables that store reference to actual data are called Reference types.  Reference types stored on heap 
+but contain the address on heap. eg-class,interface,delegate,string,object, Array
+
+Reference Types:
+string , class,,delegate, interface, object
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+		Array																		Arraylist
+------------------------------------------------------------------------------------------------------------------------------
+
+1. This has fixed size and can’t increase or decrease dynamically. 	1. Size can be increase or decrease dynamically.
+
+2. System.Array namespace											2. System.Collection namespace
+
+3. In Arrays, we can store only one datatype 						3. In ArrayList we can store different datatype variables.
+   either int, string, char etc.
+
+4. Array cannot accept null											4. ArrayList can accepts null
+
+5. Fast 															5. Slower than Array
+
+// creating array 
+int[] arr = new int[4]; 
+
+// initializing array 
+arr[0] = 47; 
+arr[1] = 77; 
+arr[2] = 87; 
+arr[3] = 97; 
+
+
+
+// Create a list of strings 
+ArrayList al = new ArrayList(); 
+al.Add("Ajay"); 
+al.Add("Ankit"); 
+al.Add(10); 
+al.Add(10.10); 
+
+		
+------------------------------------------------------------------------------------------------------------------------------
+7. What is difference between the “throw” and “throw ex” in .NET?
+------------------------------------------------------------------------------------------------------------------------------
+
+“Throw” statement preserves original error stack whereas “throw ex” have the stack trace from their throw point. 
+It is always advised to use “throw” because it provides more accurate error information.
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+7. Difference-between-var-and-dynamic?
+------------------------------------------------------------------------------------------------------------------------------
+
+				Var																		dynamic
+----------------------------------------------------------------------------------------------------
+	1. Introduced in C# 3.0													Introduced in C# 4.0
+
+
+	2. The variables are declared using "var" keyword 						The variables are declared using dynamic keyword 
+	   are statically typed.   		        		 						are dynamically typed.
+	        .
+
+   3. Need to initialize at the time of declaration.  						No need to initialize at the time of declaration.
+              e.g., var str=”I am a string”;									e.g., dynamic str; 
+      Looking at the value assigned to the variable str, the 				str=”I am a string”; //Works fine and compiles
+      compiler will treat the variable str as string.						str=2; //Works fine and compiles
+
+   4. If the variable does not initialized it throw an error.  				If the variable does not initialized it will not throw an error.
+
+   5. Errors are caught at compile time.									Errors are caught at runtime 
+      Since the compiler knows about the type and the methods 				Since the compiler comes to about the type and the 
+	  and properties of the type at the compile time itself					methods and properties of the type at the run time.
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+8. What are generics in C#.NET?
+------------------------------------------------------------------------------------------------------------------------------
+
+Generics allow you to define a class with placeholders, Generics replace these placeholders with some specific type at compile time. 
+
+Generics denotes with angel bracket <>. 
+
+Advantages of Generics
+
+    - Increases the reusability of the code.
+    - Generic are type safe. You get compile time errors if you try to use a different type of data than the one specified in the definition.
+    - Generic has a performance advantage because it removes the possibilities of boxing and unboxing.
+
+Generics can be applied to the following:
+
+    Interface
+    Abstract class
+    Class
+    Method
+    Static method
+    Property
+    Event
+    Delegates
+    Operator
+	
+
+-----------------------------------------------------------
+Type Safety :
+-----------------------------------------------------------
+
+One of the most significant features of Generics is Type Safety. In the case of the non-generic ArrayList class, 
+if objects are used, any type can be added to the collections that can sometimes result in a great disaster. 
+The following example shows adding an integer, string and object to the collection of an ArrayList type;
+
+ArrayList obj = new ArrayList();
+obj.Add(50);
+obj.Add("Dog");
+obj.Add(new TestClass());
+
+Now, if the collection is iterated through the foreach statement using integer elements, 
+the compiler accepts the code but because all the elements in the collection are not an integer, a runtime exception occurs;
+
+foreach(int i in obj)
+{
+    Console.WriteLine(i); 
+}
+
+The rule of thumb in programming is that Errors should be detected as early as possible. 
+With the generic class Test<T>, the generic type T defines what types are allowed. 
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+9. What is the purpose of Dispose method?
+------------------------------------------------------------------------------------------------------------------------------
+
+Answer:  Dispose method is used to destroy the objects from the memory.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+10. What is Type Safety?
+------------------------------------------------------------------------------------------------------------------------------
+
+Answer:   TypeSafe is a way through which the application or framework that the memory will not be leaked to outside environment. 
+E.g. C# is the type safe language where you must have to assign any object before using it. In VB.Net it will take the default value. 
+So C# is the type safe language while VB.Net is not.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+11. What is connection pooling and how to enable and disable connection pooling?
+------------------------------------------------------------------------------------------------------------------------------
+Answer:   Connection pool is created when we open connection first time. When a new connection is created with same connection string as the first one, 
+it reuses the same and existing connection object from the pool without creating a new one.
+
+If the connection string is different then a new connection pooling will be created, thus won't use the existing connection object.
+
+By default, we have connection pooling enabled in .Net. To disable connection pooling, set Pooling = false in the connection string.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+12. Why is an object pool required?
+------------------------------------------------------------------------------------------------------------------------------
+
+Answer:   To enhance performance and reduce the load of creating new objects, instead re using existing objects stored in memory pool. 
+Object Pool is a container of objects that are for use and have already been created. Whenever an object creation request occurs, 
+the pool manager serves the request by allocating an object from the pool. This minimizes the memory consumption and system's resources by recycling
+ and re-using objects. When the task of an object is done, it is sent to the pool rather than being destroyed. This reduces the work for garbage
+ collector and fewer memory allocations occur.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+13. What is the lifespan for items stored in ViewState?
+------------------------------------------------------------------------------------------------------------------------------
+Answer:   
+
+The items stored in ViewState live until the lifetime of the current page expires including the postbacks to the same page.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+14. In which event are the controls fully loaded?
+------------------------------------------------------------------------------------------------------------------------------
+Answer:   
+
+Page load event guarantees that all controls are fully loaded. Controls are also accessed in Page_Init events but you will see that 
+view state is not fully loaded during this event
+
+
+------------------------------------------------------------------------------------------------------------------------------
+15. What is the difference between “continue” and “break” statements in C#?
+------------------------------------------------------------------------------------------------------------------------------
+Answer:
+
+Using break statement, you can 'jump out of a loop' whereas by 
+using continue statement, you can 'jump over one iteration' and then resume your loop execution.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+16. What is the difference between constant and read only in c#?
+------------------------------------------------------------------------------------------------------------------------------
+Answer:
+
+Constant
+
+Constant fields or local variables must be assigned a value at the time of declaration and after that they cannot be modified. 
+By default constant are static, hence you cannot define a constant type as static. 
+
+const: Can't be changed anywhere.
+
+
+ReadOnly
+
+A readonly field can be initialized either at the time of declaration or with in the constructor of same class.
+ Therefore, readonly fields can be used for run-time constants.
+
+readonly: This value can only be changed in the constructor. Can't be changed in normal functions.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+17. What is the difference between ref and out keywords?
+------------------------------------------------------------------------------------------------------------------------------
+
+Ref
+
+The ref keyword is used to pass an argument as a reference. This means that when value of that parameter is changed in the method, 
+it gets reflected in the calling method. An argument that is passed using a ref keyword must be initialized in the calling method before
+ it is passed to the called method.
+
+
+Out
+
+The out keyword is also used to pass an argument like ref keyword, but the argument can be passed without assigning any value to it.
+ An argument that is passed using an out keyword must be initialized in the called method before it returns back to calling method.
+
+
+
+    public class Example
+    {
+     public static void Main() //calling method
+     {
+     int val1 = 0; //must be initialized 
+     int val2; //optional
+     
+     Example1(ref val1);
+     Console.WriteLine(val1); // val1=1
+     
+     Example2(out val2);
+     Console.WriteLine(val2); // val2=2
+     }
+     
+     static void Example1(ref int value) //called method
+     {
+     value = 1;
+     }
+     static void Example2(out int value) //called method
+     {
+     value = 2; //must be initialized 
+     }
+    }
+     
+    /* Output
+     1
+     2
+     */
+
+------------------------------------------------------------------------------------------------------------------------------
+18. What is the difference between dispose and finalize methods in c#?
+------------------------------------------------------------------------------------------------------------------------------
+
+Finalize:
+
+	1.  Finalize used to free unmanaged resources those are not in use like files, database connections in application domain and more, held by an 
+	    object before that object is destroyed.
+	2. In the Internal process it is called by Garbage Collector and can’t called manual by user code or any service.
+        3. Finalize belongs to System.Object class.
+
+Dispose:
+
+    	1. Dispose is also used to free unmanaged resources those are not in use like files, database connections in Application domain at any time.
+    	2. Dispose explicitly it is called by manual user code.
+        3. It belongs to IDisposable interface.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+15. What is the difference between string and StringBuilder in c#?
+------------------------------------------------------------------------------------------------------------------------------
+
+Answer:
+
+StringBuilder and string both use to store string value but both have many differences on the bases of instance creation and also for performance:
+
+
+String:
+
+String is an immutable object. 
+Immutable like when we create string object in code so we cannot modify or change that object in any operations like insert new value, replace or append any value 
+with existing value in string object, when we have to do some operations to change string simply it will dispose the old value of string object and it will 
+create new instance in memory for hold the new value in string object.
+
+StringBuilder:
+
+System.Text.Stringbuilder is mutable object which also hold the string value, mutable means once we create a System.Text.Stringbuilder object we can use 
+this object for any operation like insert value in existing string with insert functions also replace or append without creating new instance of
+ System.Text.Stringbuilder for every time so it’s use the previous object so it’s work fast as compare than System.String. 
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+16. What is IEnumerable<> in c#? 
+------------------------------------------------------------------------------------------------------------------------------
+
+
+IEnumerable
+
+    IEnumerable exists in System.Collections Namespace.
+
+    IEnumerable can move forward only over a collection, it can’t move backward and between the items.
+
+    IEnumerable is best to query data from in-memory collections like List, Array etc.
+
+    IEnumerable is suitable for LINQ to Object and LINQ to XML queries.
+
+    IEnumerable doesn’t supports custom query.
+
+    IEnumerable doesn’t support lazy loading. Hence not suitable for paging like scenarios.
+
+
+IQueryable
+
+    IQueryable exists in System.Linq Namespace.
+
+    IQueryable can move forward only over a collection, it can’t move backward and between the items.
+
+    IQueryable is best to query data from out-memory (like remote database, service) collections.
+
+    While query data from database, IQueryable execute select query on server side with all filters.
+
+    IQueryable is suitable for LINQ to SQL queries.
+
+    IQueryable support lazy loading. Hence it is suitable for paging like scenarios.
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+17. Dependency Injection (DI) is a software design pattern that allow us to develop loosely coupled code ?
+------------------------------------------------------------------------------------------------------------------------------
+
+When designing an object oriented application, a major concern of design is "Design must be loosely coupled", 
+which means that objects should have only those dependencies which are required doing their task and it must be fewer. 
+Object dependencies should be an interface not on "concrete" objects. Loose coupling offers us greater reusability, maintainability and testability.
+
+There are three basic type of Dependency Injection
+
+    Construction Injection
+    Setter Injection
+    Interface based Injection.
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+Exception in finally block
+------------------------------------------------------------------------------------------------------------------------------
+
+1) Handle at highr level. If excptioon is not handale at higher level the application crashes.
+2) in finally block execution stop at the point where exception thrown;  [write log so we can easily capture exection point]
+3) 
+
+ 
+
+
